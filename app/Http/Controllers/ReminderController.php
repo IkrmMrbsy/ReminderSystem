@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Reminder;
@@ -7,39 +6,80 @@ use Illuminate\Http\Request;
 
 class ReminderController extends Controller
 {
+    // Menampilkan semua reminder untuk tampilan (web view)
+    public function indexView(){
+        $reminders = Reminder::all();
+        return view('index', compact('reminders'));
+    }
+
+    // Menampilkan form untuk membuat reminder baru
+    public function createView(){
+        return view('create');
+    }
+
+    // Menyimpan reminder baru ke database (API + web)
     public function store(Request $request){
-        $request->validate([
+        $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'reminder_time' => 'required|date',
         ]);
 
-        $reminder = Reminder::create([
-            'title' => $request->title,
-            'description' => $request->description,
-            'reminder_time' => $request->reminder_time,
-        ]);
+        $reminder = Reminder::create($validated);
 
-        return response()->json($reminder, 201);
+        // Untuk API
+        if ($request->expectsJson()) {
+            return response()->json($reminder, 201);
+        }
+
+        // Redirect ke halaman reminder
+        return redirect()->route('index')->with('success', 'Reminder created successfully.');
     }
 
-    public function index(){
-        return response()->json(Reminder::all());
-    }
-
-    public function show($id){
+    // Menampilkan reminder berdasarkan ID untuk tampilan (web view)
+    public function showView($id){
         $reminder = Reminder::findOrFail($id);
-        return response()->json($reminder);
+        return view('show', compact('reminder'));
     }
 
+    // Menampilkan form edit reminder
+    public function editView($id){
+        $reminder = Reminder::findOrFail($id);
+        return view('edit', compact('reminder'));
+    }
+
+    // Memperbarui reminder berdasarkan ID
     public function update(Request $request, $id){
         $reminder = Reminder::findOrFail($id);
-        $reminder->update($request->all());
-        return response()->json($reminder);
+
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'reminder_time' => 'required|date',
+        ]);
+
+        $reminder->update($validated);
+
+        // Untuk API
+        if ($request->expectsJson()) {
+            return response()->json($reminder, 200);
+        }
+
+        // Redirect ke halaman reminder setelah update
+        return redirect()->route('reminders.index')->with('success', 'Reminder updated successfully.');
     }
 
+    // Menghapus reminder berdasarkan ID
     public function destroy($id){
-        Reminder::destroy($id);
-        return response()->json(['message' => 'Reminder Deleted Successfully']);
+        $reminder = Reminder::findOrFail($id);
+        $reminder->delete();
+
+        // Untuk API
+        if (request()->expectsJson()) {
+            return response()->json(['message' => 'Reminder deleted successfully.'], 200);
+        }
+
+        // Redirect ke halaman reminder setelah delete
+        return redirect()->route('reminders.index')->with('success', 'Reminder deleted successfully.');
     }
 }

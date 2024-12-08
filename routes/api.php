@@ -15,4 +15,5 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+//Dengan pakai (resource) Menghasilkan seluruh rute CRUD, ketimbang kita buat satu2 seperti (Route::get,POST)
 Route::resource('reminders', ReminderController::class);
