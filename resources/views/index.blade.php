@@ -1,14 +1,14 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+<div class="min-h-screen bg-gradient-to-br from-[#2D6F8E] via-[#3B89B3] to-[#2D6F8E] py-12 px-4 sm:px-6 lg:px-8">
     <div class="max-w-7xl mx-auto">
         <div class="text-center mb-12">
-            <h1 class="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 mb-4">
-                Smart Reminders
+            <h1 class="text-5xl font-bold text-white mb-4">
+                NotifyMe
             </h1>
-            <p class="text-xl text-gray-500 max-w-2xl mx-auto">
-                Stay organized and on top of your tasks with intelligent reminder management
+            <p class="text-xl text-gray-100 max-w-2xl mx-auto">
+                Stay organized and never miss important moments with smart notifications
             </p>
         </div>
 
@@ -16,13 +16,14 @@
             <a href="{{ route('reminders.create') }}" class="
                 flex items-center 
                 px-6 py-3 
-                bg-gradient-to-r from-blue-600 to-purple-600 
-                text-white 
-                rounded-full 
+                bg-white
+                text-[#2D6F8E]
+                rounded-lg
                 shadow-lg 
-                hover:from-blue-700 hover:to-purple-700 
+                hover:bg-gray-50
                 transition-all 
                 duration-300
+                font-semibold
             ">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
@@ -36,7 +37,7 @@
                 <div class="
                     bg-white 
                     rounded-2xl 
-                    shadow-lg 
+                    shadow-xl 
                     overflow-hidden 
                     transition-all 
                     duration-300 
@@ -58,7 +59,7 @@
                         w-3 
                         h-3 
                         rounded-full 
-                        {{ strtotime($reminder->reminder_time) < time() ? 'bg-red-500' : 'bg-green-500' }}
+                        {{ strtotime($reminder->reminder_time) < time() ? 'bg-red-500' : 'bg-[#2D6F8E]' }}
                     "></div>
 
                     {{-- Actions --}}
@@ -75,13 +76,13 @@
                         duration-300
                     ">
                         <a href="{{ route('reminders.edit', $reminder->id) }}" class="
-                            bg-yellow-50 
+                            bg-[#2D6F8E]/10
                             p-2 
-                            rounded-full 
-                            hover:bg-yellow-100 
+                            rounded-lg
+                            hover:bg-[#2D6F8E]/20
                             transition-colors
                         ">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-yellow-600" viewBox="0 0 20 20" fill="currentColor">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-[#2D6F8E]" viewBox="0 0 20 20" fill="currentColor">
                                 <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.379-8.379-2.828-2.828z" />
                             </svg>
                         </a>
@@ -92,7 +93,7 @@
                             <button type="submit" class="
                                 bg-red-50 
                                 p-2 
-                                rounded-full 
+                                rounded-lg
                                 hover:bg-red-100 
                                 transition-colors
                             ">
@@ -105,7 +106,7 @@
 
                     <div class="p-6">
                         <div class="flex items-center mb-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3 text-[#2D6F8E]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
                             <p class="text-sm text-gray-500">
@@ -113,7 +114,7 @@
                             </p>
                         </div>
 
-                        <h2 class="text-2xl font-bold text-gray-800 mb-3">
+                        <h2 class="text-2xl font-bold text-[#2D6F8E] mb-3">
                             {{ $reminder->title }}
                         </h2>
 
@@ -125,13 +126,14 @@
                             <a href="{{ route('reminders.show', $reminder->id) }}" class="
                                 px-4 
                                 py-2 
-                                bg-blue-50 
-                                text-blue-600 
+                                bg-[#2D6F8E]/10
+                                text-[#2D6F8E]
                                 rounded-lg 
-                                hover:bg-blue-100 
+                                hover:bg-[#2D6F8E]/20
                                 transition-colors 
                                 flex 
                                 items-center
+                                font-medium
                             ">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                                     <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
@@ -143,9 +145,20 @@
                     </div>
                 </div>
             @empty
-                <div class="col-span-full text-center py-12">
-                    <h3 class="text-2xl text-gray-500 mb-4">No reminders found</h3>
-                    <p class="text-gray-400">Create your first reminder to get started</p>
+                <div class="col-span-full">
+                    <div class="bg-white rounded-2xl shadow-xl p-8 max-w-2xl mx-auto text-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-[#2D6F8E] mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                        </svg>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-2">No Reminders Yet</h3>
+                        <p class="text-gray-600 mb-6">Create your first reminder to get started with NotifyMe!</p>
+                        <a href="{{ route('reminders.create') }}" class="inline-flex items-center px-6 py-3 bg-[#2D6F8E] text-white rounded-lg shadow-lg hover:bg-[#235D77] transition duration-300 font-semibold">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                            </svg>
+                            Create First Reminder
+                        </a>
+                    </div>
                 </div>
             @endforelse
         </div>

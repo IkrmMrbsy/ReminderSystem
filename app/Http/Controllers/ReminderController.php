@@ -33,7 +33,7 @@ class ReminderController extends Controller
         }
 
         // Redirect ke halaman reminder
-        return redirect()->route('index')->with('success', 'Reminder created successfully.');
+        return redirect()->route('reminders.index')->with('success', 'Reminder created successfully.');
     }
 
     // Menampilkan reminder berdasarkan ID untuk tampilan (web view)
